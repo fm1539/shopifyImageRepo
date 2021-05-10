@@ -9,7 +9,12 @@
   "author": "Farhan Mashud",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.14.0",
+    "aws-sdk": "^2.903.0",
     "express": "^4.17.1",
-    "mongoose": "^5.12.7"
+    "express-fileupload": "^1.2.1",
+    "md5": "^2.3.0",
+    "mongoose": "^5.12.7",
+    "stripe": "^8.148.0"
   }
 }

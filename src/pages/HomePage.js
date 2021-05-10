@@ -7,6 +7,11 @@ import {login, logout, checkLoggedIn, register} from '../global/Reducer'
 function HomePage(){
     const [show, setShow] = useState(false);
     const [show2, setShow2] = useState(false)
+    const [imgs, setImgs] = useState([['https://i.postimg.cc/CK68zSZ7/firefox-2018-07-10-07-50-11.png', 1], 
+    ["https://i.postimg.cc/T1bgzF39/opt-aboutcom-coeus-resources-content-migration-serious-eats-seriouseats-com-2015-07-20210.jpg", 2],
+    ['https://i.postimg.cc/dtmTG8kL/SONATA-hero-option1-764-A5360-edit.jpg', 3],
+     ['https://i.postimg.cc/dtKy7W0b/types-of-homes-hero.jpg', 4],
+     ['https://i.postimg.cc/L89gDnLv/acela-1080.jpg', 5]])
 
     const [loginEvent, setLoginEvent] = useState({
         username: "",
@@ -68,10 +73,22 @@ function HomePage(){
     let loggedIn = false
     if (checkLoggedIn()) loggedIn = true
 
+    const purchaseHandler = (event) => {
+        const ID = event.target.id
+        var imgUrl = ""
+        for (let i = 0; i < imgs.length; i++) {
+            if (imgs[i][1] == ID) {
+                imgUrl = imgs[i][0]
+                break
+            }
+        }
+        window.location = '/purchase/'+(ID * 1.5)+'/'+JSON.parse(localStorage.getItem('userObj')).username
+    }
+
     return (
         <React.Fragment>
             {loggedIn ? <NavBar 
-                nav={[['/profile', 'My Profile']]} 
+                nav={[['/profile', 'My Profile'], ['/upload', 'Upload an image']]} 
                 accountManagement={[handleShow, handleShow2]}
                 loggedIn = {loggedIn}
                 logOut = {logout}
@@ -93,9 +110,9 @@ function HomePage(){
                 </Modal.Header>
                 <Modal.Body>
                     <form>
-                        <label>Email</label>
+                        <label>Username</label>
                         <br/>
-                        <input type="email" name="email" placeholder="Email" onChange={loginChangeHandler} autocomplete="chrome-off" required/>
+                        <input type="text" name="username" placeholder="Username" onChange={loginChangeHandler} autocomplete="chrome-off" required/>
                         <br/>
                         <br/>
                         <label>Password</label>
@@ -139,29 +156,19 @@ function HomePage(){
                 </Button>
                 </Modal.Footer>
             </Modal>
-            <div className="search-flights-div">
-                <h1 style={{color: 'white'}}>Search for User!</h1>
-            <Card style={{boxShadow: '0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%)', width:'50%', marginLeft: 'auto', marginRight: 'auto'}}>
-                    <Card.Body>
-                        <Card.Title style={{'textAlign': 'left'}}>Search User</Card.Title>
-                        <div style={{'display': 'flex'}}>
-                            <InputGroup className="mb-3" style={{'width': '50%'}}>
-                                <InputGroup.Prepend>
-                                    <InputGroup.Text id="basic-addon1">User</InputGroup.Text>
-                                </InputGroup.Prepend>
-                                <FormControl
-                                placeholder=""
-                                aria-label="Username"
-                                name="leaving"
-                                onChange={searchChangeHandler}
-                                aria-describedby="basic-addon1"
-                                />
-                            </InputGroup>
+            <div>
+                <h1 style={{color: 'black'}}>Select an image to purchase!</h1>
+                {imgs.map(image => {
+                    return (
+                        <div>
+                            <Card style={{boxShadow: '0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%)', width:'50%', marginLeft: 'auto', marginRight: 'auto'}}>
+                                <Card.Img src={image[0]}></Card.Img>
+                                <Button id={image[1]} onClick={purchaseHandler}>Purchase for {image[1] * 1.5}</Button>
+                            </Card>
+                            <br></br>
                         </div>
-                        <br/><br/>
-                        <Button onClick={searchButtonHandler}>Search</Button>
-                    </Card.Body>
-                </Card>
+                    )
+                })}
             </div>
         </React.Fragment>
     )
