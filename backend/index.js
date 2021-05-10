@@ -1,5 +1,5 @@
 const express = require('express')
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser')   
 const md5 = require('md5')
 var AWS = require("aws-sdk")
 const fileUpload = require('express-fileupload')
@@ -7,14 +7,16 @@ const app = express()
 app.use(fileUpload())
 const stripeSecretKey = "sk_test_51IPVGeE1OhnzAuXA6O5DHCEnFoFn83P8Bm9IqUDf7uHctArxPDKPDBPU0UggytN4jWrxgr70KcXr5hzbUpMURyv9006YzplFOn" 
 const stripe = require ('stripe')(stripeSecretKey)
+require('dotenv').config()
 
 let awsConfig = {
     "region": "us-east-2",
     "endpoint": "http://dynamodb.us-east-2.amazonaws.com",
-    "accessKeyId": "AKIAQM45PICZCJUQDBU2",
-    "secretAccessKey": "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"
+    "accessKeyId": process.env.ACCESSKEYID,
+    "secretAccessKey": process.env.SECRETACCESSKEY
 }
 
+console.log(awsConfig["accessKeyId"]);
 AWS.config.update(awsConfig)
 
 let docClient = new AWS.DynamoDB.DocumentClient()
